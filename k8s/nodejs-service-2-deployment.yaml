@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nodejs-service-2
+  labels:
+    app: nodejs-service-2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nodejs-service-2
+  template:
+    metadata:
+      labels:
+        app: nodejs-service-2
+    spec:
+      containers:
+        - name: nodejs-service-2
+          image: node-api:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3002
+          env:
+            - name: PORT
+              value: "3002"
+            - name: SERVICE_NAME
+              value: "service2"

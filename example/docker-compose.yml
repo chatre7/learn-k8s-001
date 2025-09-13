@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  nginx:
+    image: nginx:latest
+    container_name: my_nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - nodejs_service_1
+      - nodejs_service_2
+    networks:
+      - my_network
+
+  nodejs_service_1:
+    build:
+      context: ./service1 # ระบุ path ไปยัง service 1 ของคุณ
+      dockerfile: Dockerfile
+    container_name: nodejs_service_1
+    expose:
+      - "3001" # Port ที่ service 1 ทำงานภายใน Docker
+    networks:
+      - my_network
+
+  nodejs_service_2:
+    build:
+      context: ./service2 # ระบุ path ไปยัง service 2 ของคุณ
+      dockerfile: Dockerfile
+    container_name: nodejs_service_2
+    expose:
+      - "3002" # Port ที่ service 2 ทำงานภายใน Docker
+    networks:
+      - my_network
+
+networks:
+  my_network:
+    driver: bridge
